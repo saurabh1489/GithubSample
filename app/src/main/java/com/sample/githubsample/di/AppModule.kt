@@ -1,6 +1,7 @@
 package com.sample.githubsample.di
 
 import com.sample.githubsample.network.GithubService
+import com.sample.githubsample.util.LiveDataCallAdaptorFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -12,6 +13,7 @@ class AppModule {
     fun provideGithubService(): GithubService {
         return Retrofit.Builder()
             .baseUrl("https://github-trending-api.now.sh")
+            .addCallAdapterFactory(LiveDataCallAdaptorFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GithubService::class.java)
