@@ -1,8 +1,12 @@
 package com.sample.githubsample.vo
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class Repo(
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @field:SerializedName("author")
     val author: String,
     @field:SerializedName("name")
@@ -23,4 +27,8 @@ data class Repo(
     val fork: Int,
     @field:SerializedName("currentPeriodStars")
     val currentPeriodStars: Int
-)
+) {
+    companion object {
+        const val UNKNOWN_ID = -1
+    }
+}
