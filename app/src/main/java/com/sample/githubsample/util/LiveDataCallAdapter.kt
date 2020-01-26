@@ -28,7 +28,6 @@ class LiveDataCallAdapter<R>(private val responseType: Type) :
                         override fun onResponse(call: Call<R>, response: Response<R>) {
                             postValue(ApiResponse.create(response))
                         }
-
                     })
                 }
             }
