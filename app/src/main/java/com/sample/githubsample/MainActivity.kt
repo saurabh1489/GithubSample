@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         }
 
         mainActivityViewModel.results.observe(this, Observer {
-            Log.d("Awasthi", it.toString())
+            Log.d("Awasthi", "${it.data?.size}")
         })
     }
 

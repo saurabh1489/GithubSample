@@ -10,10 +10,7 @@ import com.sample.githubsample.api.ApiEmptyResponse
 import com.sample.githubsample.api.ApiErrorResponse
 import com.sample.githubsample.api.ApiResponse
 import com.sample.githubsample.api.ApiSuccessResponse
-import com.sample.githubsample.vo.Error
-import com.sample.githubsample.vo.Loading
-import com.sample.githubsample.vo.Resource
-import com.sample.githubsample.vo.Success
+import com.sample.githubsample.vo.*
 
 private const val TAG = "NetworkBoundResource"
 
@@ -38,21 +35,34 @@ abstract class NetworkBoundResource<RequestType, ResultType>
 
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         Log.d(TAG, "fetchFromNetwork")
+        result.removeSource(dbSource)
+        result.addSource(dbSource) {
+            Log.d(TAG, "Add source ${it.toString()}")
+        }
+        result.removeSource(dbSource)
         val apiResponse = createCall()
         result.addSource(apiResponse) { response ->
             when (response) {
                 is ApiSuccessResponse -> {
+                    Log.d(TAG, "ApiSuccessResponse")
                     appExecutors.diskIO().execute {
                         saveCallResult(processResponse(response))
                     }
+                    appExecutors.mainThread().execute {
+                        result.addSource(loadFromDb()) { newData ->
+                            setValue(Success(newData))
+                        }
+                    }
                 }
                 is ApiErrorResponse -> {
+                    Log.d(TAG, "ApiErrorResponse")
                     result.removeSource(dbSource)
                     result.addSource(dbSource) { cachedData ->
                         setValue(Error(cachedData, response.errorMessage))
                     }
                 }
                 is ApiEmptyResponse -> {
+                    Log.d(TAG, "ApiEmptyResponse")
                     result.removeSource(dbSource)
                     result.addSource(loadFromDb()) { cachedData ->
                         setValue(Success(cachedData))
@@ -64,6 +74,7 @@ abstract class NetworkBoundResource<RequestType, ResultType>
 
     @MainThread
     private fun setValue(newValue: Resource<ResultType>) {
+        Log.d(TAG, "setValue ${newValue.data}")
         if (result.value != newValue) {
             result.value = newValue
         }

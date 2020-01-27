@@ -12,16 +12,7 @@ object TestUtil {
         }
     }
 
-    fun createRepo(author: String, name: String, description: String) = createRepo(
-        id = Repo.UNKNOWN_ID,
-        name = name,
-        author = author,
-        description = description
-    )
-
-
-    fun createRepo(id: Int, author: String, name: String, description: String) = Repo(
-        id = id,
+    fun createRepo(author: String, name: String, description: String) = Repo(
         name = name,
         description = description,
         author = author,
