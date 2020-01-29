@@ -37,27 +37,27 @@
                 app:srcCompat="@android:drawable/btn_star" />
 
             <TextView
-                android:id="@+id/repo_name"
+                android:id="@+id/author_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="@dimen/default_vertical_margin"
-                android:text="@{repo.name}"
+                android:text="@{repo.author}"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Repo 1" />
 
             <TextView
-                android:id="@+id/author_name"
+                android:id="@+id/repo_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="@dimen/default_vertical_margin"
-                android:text="@{repo.author}"
+                android:text="@{repo.name}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@id/repo_name"
+                app:layout_constraintTop_toBottomOf="@id/author_name"
                 tools:text="Yigit Boyar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
