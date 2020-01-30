@@ -5,9 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="repo"
             type="com.sample.githubsample.vo.Repo" />
+
+        <variable
+            name="isExpanded"
+            type="Boolean" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -17,7 +23,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_vertical_margin"
+            android:paddingBottom="@dimen/default_vertical_margin">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -25,40 +33,99 @@
                 android:layout_height="@dimen/photo_size"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginBottom="8dp"
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{repo.avatar}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/repo_name"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@id/author_name"
                 app:srcCompat="@android:drawable/btn_star" />
-
-            <TextView
-                android:id="@+id/author_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="@dimen/default_vertical_margin"
-                android:text="@{repo.author}"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Repo 1" />
 
             <TextView
                 android:id="@+id/repo_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="@dimen/default_vertical_margin"
                 android:text="@{repo.name}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@id/author_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Repo 1" />
+
+            <TextView
+                android:id="@+id/author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="6dp"
+                android:text="@{repo.author}"
+                app:layout_constraintStart_toEndOf="@id/imageView"
+                app:layout_constraintTop_toBottomOf="@id/repo_name"
                 tools:text="Yigit Boyar" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:text="@{repo.description}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/repo_name"
+                app:layout_constraintTop_toBottomOf="@id/author_name"
+                tools:text="Hello How are you. Plase let us kow as das assa das dsadsadsdsdsad sdsas sad sads sads ad" />
+
+            <TextView
+                android:id="@+id/language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@{String.valueOf(repo.language)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/description"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                tools:text="123" />
+
+            <TextView
+                android:id="@+id/stars"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/star"
+                android:gravity="center_vertical"
+                android:text="@{String.valueOf(repo.stars)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/language"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                tools:text="456" />
+
+            <TextView
+                android:id="@+id/fork"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/fork"
+                android:gravity="center_vertical"
+                android:text="@{String.valueOf(repo.fork)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/stars"
+                app:layout_constraintTop_toBottomOf="@id/description"
+                tools:text="789" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:constraint_referenced_ids="author_name,repo_name" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{isExpanded ? View.VISIBLE : View.GONE}"
+                app:constraint_referenced_ids="fork,stars,language,description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

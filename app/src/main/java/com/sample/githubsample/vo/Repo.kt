@@ -3,6 +3,7 @@ package com.sample.githubsample.vo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.nio.channels.spi.AbstractSelectableChannel
 
 @Entity(primaryKeys = ["author", "name"])
 data class Repo(

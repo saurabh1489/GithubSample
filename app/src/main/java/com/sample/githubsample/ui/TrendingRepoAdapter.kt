@@ -33,6 +33,8 @@ class TrendingRepoAdapter(
 
     }
 ) {
+    private var mExpandPosition = -1
+
     override fun createBinding(parent: ViewGroup): ItemListBinding {
         val binding = DataBindingUtil.inflate<ItemListBinding>(
             LayoutInflater.from(parent.context),
@@ -44,8 +46,18 @@ class TrendingRepoAdapter(
         return binding
     }
 
-    override fun bind(binding: ItemListBinding, item: Repo) {
+    override fun getItemId(position: Int): Long {
+        return getItem(position).hashCode().toLong()
+    }
+
+    override fun bind(binding: ItemListBinding, item: Repo, position: Int) {
+        val isExpanded = position == mExpandPosition
         binding.repo = item
+        binding.isExpanded = isExpanded
+        binding.root.setOnClickListener { view ->
+            mExpandPosition = if (isExpanded) -1 else position
+            notifyDataSetChanged()
+        }
     }
 
 }
