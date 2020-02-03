@@ -1,16 +1,10 @@
 package com.sample.githubsample.ui
 
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import com.sample.githubsample.AppExecutors
 import com.sample.githubsample.R
 import com.sample.githubsample.databinding.ItemListBinding
@@ -51,12 +45,13 @@ class TrendingRepoAdapter(
     }
 
     override fun bind(binding: ItemListBinding, item: Repo, position: Int) {
-        val isExpanded = position == mExpandPosition
+        val isExpanded = mExpandPosition == position
         binding.repo = item
         binding.isExpanded = isExpanded
-        binding.root.setOnClickListener { view ->
+        binding.root.setOnClickListener {
+            notifyItemChanged(mExpandPosition, Unit)
             mExpandPosition = if (isExpanded) -1 else position
-            notifyDataSetChanged()
+            notifyItemChanged(position)
         }
     }
 

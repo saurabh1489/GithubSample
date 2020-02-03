@@ -1,8 +1,8 @@
 package com.sample.githubsample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.sort_menu, menu)
-        return true
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun androidInjector() = dispatchingAndroidInjector

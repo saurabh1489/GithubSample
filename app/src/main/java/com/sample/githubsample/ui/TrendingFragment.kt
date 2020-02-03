@@ -2,6 +2,7 @@ package com.sample.githubsample.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
@@ -15,7 +16,6 @@ import com.sample.githubsample.R
 import com.sample.githubsample.binding.FragmentDatabindingComponent
 import com.sample.githubsample.databinding.TrendingFragmentBinding
 import com.sample.githubsample.di.Injectable
-import kotlinx.android.synthetic.main.trending_fragment.*
 import javax.inject.Inject
 
 class TrendingFragment : Fragment(), Injectable {
@@ -46,6 +46,7 @@ class TrendingFragment : Fragment(), Injectable {
             false
         )
         binding = databinding
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -57,12 +58,23 @@ class TrendingFragment : Fragment(), Injectable {
         initRepoList(trendingViewModel)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sort_by_name -> trendingViewModel.sortByName()
+            R.id.sort_by_stars -> trendingViewModel.sortByStars()
+        }
+        return true
+    }
+
     private fun initRepoList(trendingViewModel: TrendingViewModel) {
         trendingViewModel.results.observe(viewLifecycleOwner, Observer { repoList ->
-            if (repoList != null)
+            if (repoList != null) {
                 adapter.submitList(repoList?.data)
-            else
+                adapter.notifyItemRangeChanged(0, adapter.itemCount)
+            } else {
                 adapter.submitList(emptyList())
+            }
         })
     }
+
 }
