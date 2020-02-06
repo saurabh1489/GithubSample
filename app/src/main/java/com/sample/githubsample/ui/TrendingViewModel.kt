@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.sample.githubsample.repository.RepoRepository
+import com.sample.githubsample.vo.Loading
 import com.sample.githubsample.vo.Repo
 import com.sample.githubsample.vo.Resource
 import com.sample.githubsample.vo.Success
@@ -13,17 +14,14 @@ import javax.inject.Inject
 
 const val TAG = "TrendingViewModel"
 
-class TrendingViewModel @Inject constructor(repository: RepoRepository) : ViewModel() {
+class TrendingViewModel @Inject constructor(private val repository: RepoRepository) : ViewModel() {
     private val _results = MediatorLiveData<Resource<List<Repo>>>()
 
     val results: LiveData<Resource<List<Repo>>>
         get() = _results
 
     init {
-        val results = repository.loadRepos()
-        _results.addSource(results) {
-            _results.value = it
-        }
+        loadRepos()
     }
 
     fun sortByName() {
@@ -42,5 +40,15 @@ class TrendingViewModel @Inject constructor(repository: RepoRepository) : ViewMo
             repo1.stars - repo2.stars
         }
         _results.value = Success(reposList)
+    }
+
+    fun loadRepos() {
+        val results = repository.loadRepos()
+        _results.addSource(results) {
+            _results.value = it
+            if (it !is Loading) {
+                _results.removeSource(results)
+            }
+        }
     }
 }

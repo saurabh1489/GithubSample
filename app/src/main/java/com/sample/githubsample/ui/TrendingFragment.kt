@@ -1,6 +1,7 @@
 package com.sample.githubsample.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -55,6 +56,9 @@ class TrendingFragment : Fragment(), Injectable {
         val adapter = TrendingRepoAdapter(dataBindingComponent, appExecutors)
         this.adapter = adapter
         binding.repoList.adapter = adapter
+        binding.pullToRefresh.setOnRefreshListener {
+            trendingViewModel.loadRepos()
+        }
         initRepoList(trendingViewModel)
     }
 
@@ -67,9 +71,12 @@ class TrendingFragment : Fragment(), Injectable {
     }
 
     private fun initRepoList(trendingViewModel: TrendingViewModel) {
-        trendingViewModel.results.observe(viewLifecycleOwner, Observer { repoList ->
-            if (repoList != null) {
-                adapter.submitList(repoList?.data)
+        trendingViewModel.results.observe(viewLifecycleOwner, Observer { resource ->
+            Log.d("Awasthi","Results fetched")
+            binding.pullToRefresh.isRefreshing = false
+            binding.resource = resource
+            if (resource != null) {
+                adapter.submitList(resource?.data)
                 adapter.notifyItemRangeChanged(0, adapter.itemCount)
             } else {
                 adapter.submitList(emptyList())

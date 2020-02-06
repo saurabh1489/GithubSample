@@ -58,7 +58,7 @@ abstract class NetworkBoundResource<RequestType, ResultType>
                     Log.d(TAG, "ApiErrorResponse")
                     result.removeSource(dbSource)
                     result.addSource(dbSource) { cachedData ->
-                        setValue(Error(cachedData, response.errorMessage))
+                        setValue(Error1(cachedData, response.errorMessage))
                     }
                 }
                 is ApiEmptyResponse -> {
